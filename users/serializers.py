@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from .models import User
+from rest_framework import serializers
+from django.contrib.auth import get_user_model
 
 class UserRegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
@@ -19,3 +21,11 @@ class UserRegisterSerializer(serializers.ModelSerializer):
             role = validated_data.get('role', 'Patient'),
         )
         return user 
+
+User = get_user_model()
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        # only return safe fields (not password, etc.)
+        fields = ["id", "username", "email", "first_name", "last_name"]
