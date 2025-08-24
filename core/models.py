@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-
+from django.conf import settings
+'''
 class User(AbstractUser):
     ROLE_CHOICES = [
         ('admin', 'Admin'),
@@ -12,10 +13,10 @@ class User(AbstractUser):
     phone_number = models.CharField(max_length=15,blank=True, null=True)
 
     def __str__(self):
-        return f"{self.username} ({self.role})"
+        return f"{self.username} ({self.role})" '''
     
 class PatientProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='patient_profile')
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='patient_profile')
     date_of_birth =models.DateField(null=True, blank=True)
     gender = models.CharField(max_length=10, choices=[('male', 'Male'),('female', 'Female')])
     national_id = models.CharField(max_length=20, unique=True)
@@ -30,8 +31,8 @@ class Appointment(models.Model):
         ('confirmed', 'Confirmed'),
         ('cancelled', 'Cancelled'),
     ]
-    patient = models.ForeignKey(User, on_delete=models.CASCADE, related_name="appointments")
-    doctor = models.ForeignKey(User, on_delete=models.CASCADE, related_name="doctor_appointments" )
+    patient = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="appointments")
+    doctor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="doctor_appointments" )
     appointment_time = models.DateTimeField()
     service_time = models.CharField(max_length=100)
     status = models.CharField(max_length=20, choices= STATUS_CHOICES, default='pending')
@@ -48,8 +49,8 @@ class QueueEntry(models.Model):
         return f"Queue #{self.position} - {self.appointment.patient.username}" 
     
 class MedicalRecord(models.Model):
-    patient = models.ForeignKey(User, on_delete=models.CASCADE, related_name="medical_records")
-    doctor = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="created_records")
+    patient = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="medical_records")
+    doctor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name="created_records")
     record_date = models.DateTimeField(auto_now_add=True)
     diagnosis = models.TextField()
     treatment = models.TextField()
