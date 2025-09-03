@@ -14,7 +14,7 @@ class User(AbstractUser):
 
     def __str__(self):
         return f"{self.username} ({self.role})" '''
-    
+'''    
 class PatientProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='patient_profile')
     date_of_birth =models.DateField(null=True, blank=True)
@@ -24,7 +24,7 @@ class PatientProfile(models.Model):
 
     def __str__(self):
         return f"Patient: {self.user.username}"
-    
+   ''' 
 class Appointment(models.Model):
     STATUS_CHOICES = [
         ('pending', 'Pending'),

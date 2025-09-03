@@ -23,7 +23,9 @@ from users.views import CustomTokenObtainPairView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('core.urls')),
+    path("api/", include("patients.urls")),
+    
+
 
     # JWT endpoints
     path("api/users/", include("users.urls")),

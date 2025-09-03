@@ -1,6 +1,6 @@
 from rest_framework import generics, permissions
 from django.contrib.auth import get_user_model
-from .models import PatientProfile
+from patients.models import PatientProfile
 from .serializers import UserSerializer, RegisterSerializer, PatientProfileSerializer
 
 User = get_user_model()
