@@ -1,27 +1,18 @@
-from rest_framework import generics, permissions
+from rest_framework import generics
+from rest_framework.permissions import AllowAny
+from users.models import User
+from .serializers import RegisterSerializer, UserSerializer
 from django.contrib.auth import get_user_model
-from patients.models import PatientProfile
-from .serializers import UserSerializer, RegisterSerializer, PatientProfileSerializer
 
-User = get_user_model()
+User = get_user_model() 
 
-#Register new User
+# User Registration
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [AllowAny]
 
-#List all users(only for admins)
+# List all users (admins only)
 class UserListView(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [permissions.IsAdminUser]
-
-#Patient profile CRUD
-class PatientProfileView(generics.RetrieveUpdateAPIView):
-    queryset = PatientProfile.objects.all()
-    serializer_class = PatientProfileSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-    def get_object(self):
-        return self.request.user.patient_profile
