@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'patients',
     'appointments',
+    'clinic_queue',
+    'records',
 ]
 
 MIDDLEWARE = [
