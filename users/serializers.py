@@ -29,3 +29,4 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         # only return safe fields (not password, etc.)
         fields = ["id", "username", "email", "first_name", "last_name"]
+

@@ -16,23 +16,22 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework_simplejwt.views import ( # type: ignore
-    TokenRefreshView,
-)
+from rest_framework_simplejwt.views import TokenRefreshView # type: ignore
 from users.views import CustomTokenObtainPairView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("api/", include("core.urls")),
-    path("api/", include("patients.urls")),
-    path("api/", include("appointments.urls")),
-    
 
+    # User management
+    path("api/users/", include("users.urls")),
 
     # JWT endpoints
-    path("api/users/", include("users.urls")),
     path('api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+
+    # Other apps
+    path("api/patients/", include("patients.urls")),
+    path("api/appointments/", include("appointments.urls")),
+    path("api/queue/", include("clinic_queue.urls")),
+    path("api/records/", include("records.urls")),
 ]
-
-
