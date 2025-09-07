@@ -1,12 +1,12 @@
 from rest_framework import generics, permissions
 from .models import Appointment
 from .serializers import AppointmentSerializer
-from patients.models import PatientProfile
+from core.permissions import IsPatientOrAdmin
 
 class AppointmentListCreateView(generics.ListCreateAPIView):
     queryset = Appointment.objects.all()
     serializer_class = AppointmentSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsPatientOrAdmin]
 
     def get_queryset(self):
         user = self.request.user
@@ -29,7 +29,7 @@ class AppointmentListCreateView(generics.ListCreateAPIView):
 class AppointmentDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Appointment.objects.all()
     serializer_class = AppointmentSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsPatientOrAdmin]
 
     def get_queryset(self):
         user = self.request.user

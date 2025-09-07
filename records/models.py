@@ -6,13 +6,13 @@ class MedicalRecord(models.Model):
     patient = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name="medical_records"
+        related_name="records"
     )
     doctor = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         null=True,
-        related_name="created_records"
+        related_name="doctor_records"
     )
     record_date = models.DateTimeField(auto_now_add=True)
     diagnosis = models.TextField()
@@ -20,5 +20,5 @@ class MedicalRecord(models.Model):
     notes = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return f"Record for {self.patient.username} on {self.record_date}"
+        return f"Record for {self.patient.username} by {self.doctor.username if self.doctor else 'Unknown'} on {self.record_date}"
 

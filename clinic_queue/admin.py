@@ -4,5 +4,5 @@ from .models import QueueEntry
 
 @admin.register(QueueEntry)
 class QueueEntryAdmin(admin.ModelAdmin):
-    list_display = ("appointment", "position", "time_added")
+    list_display = ("appointment", "position", "created_at")
 
