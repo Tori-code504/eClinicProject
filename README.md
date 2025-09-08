@@ -43,9 +43,10 @@ python manage.py runserver
 ---
 
 ## 🔑 Authentication (JWT)
+- Register: `POST /api/users/register/`
+- Login: `/api/users/login/`
 - Obtain token: `POST /api/token/`
 - Refresh token: `POST /api/token/refresh/`
-- Register: `POST /api/users/register/`
 - Current user: `GET /api/users/me/`
 - Logout: `POST /api/users/logout/`
 
@@ -68,18 +69,18 @@ Response:
 ---
 
 ## 👥 Users API
-- `GET /api/users/users/` → List all users (Admin only)
-- `GET /api/users/users/{id}/` → Retrieve user by ID (Admin or Owner)
+- `GET /api/users/` → List all users (Admin only)
+- `GET /api/users/{id}/` → Retrieve user by ID (Admin or Owner)
 - `POST /api/users/register/` → Register new user
 
 ---
 
 ## 🧑‍⚕️ Patients API
-- `GET /api/patients/profiles/` → List all profiles (Admin only)
-- `POST /api/patients/profiles/` → Create profile (Patient only)
-- `GET /api/patients/profiles/{id}/` → View patient profile (Owner or Admin)
-- `PUT /api/patients/profiles/{id}/` → Update patient profile (Owner or Admin)
-- `DELETE /api/patients/profiles/{id}/` → Delete (Admin only)
+- `GET /api/patients/` → List all profiles (Admin only)
+- `POST /api/patients/` → Create profile (Patient only)
+- `GET /api/patients/{id}/` → View patient profile (Owner or Admin)
+- `PUT /api/patients/{id}/` → Update patient profile (Owner or Admin)
+- `DELETE /api/patients/{id}/` → Delete (Admin only)
 
 ### Example: Create Profile
 ```json
@@ -94,11 +95,11 @@ POST /api/patients/profiles/
 ---
 
 ## 📅 Appointments API
-- `GET /api/appointments/appointments/` → List all (Admin & Doctor)
-- `POST /api/appointments/appointments/` → Create appointment (Patient)
-- `GET /api/appointments/appointments/{id}/` → Retrieve appointment
-- `PUT /api/appointments/appointments/{id}/` → Update appointment (Admin/Doctor or Patient if owner)
-- `DELETE /api/appointments/appointments/{id}/` → Delete (Admin only)
+- `GET /api/appointments/` → List all (Admin & Doctor)
+- `POST /api/appointments/` → Create appointment (Patient)
+- `GET /api/appointments/{id}/` → Retrieve appointment
+- `PUT /api/appointments/{id}/` → Update appointment (Admin/Doctor or Patient if owner)
+- `DELETE /api/appointments/{id}/` → Delete (Admin only)
 
 ### Example: Create Appointment
 ```json
@@ -133,11 +134,11 @@ POST /api/queue/
 ---
 
 ## 📝 Records API
-- `GET /api/records/records/` → List all records (Admin, Doctor)
-- `POST /api/records/records/` → Create record (Admin, Doctor)
-- `GET /api/records/records/{id}/` → Retrieve record (Owner, Admin, Doctor)
-- `PUT /api/records/records/{id}/` → Update record (Admin, Doctor)
-- `DELETE /api/records/records/{id}/` → Delete record (Admin only)
+- `GET /api/records/` → List all records (Admin, Doctor)
+- `POST /api/records/` → Create record (Admin, Doctor)
+- `GET /api/records/{id}/` → Retrieve record (Owner, Admin, Doctor)
+- `PUT /api/records/{id}/` → Update record (Admin, Doctor)
+- `DELETE /api/records/{id}/` → Delete record (Admin only)
 
 ### Example: Create Medical Record
 ```json
@@ -165,12 +166,12 @@ POST /api/records/records/
 - Django 5.x
 - Django REST Framework (DRF)
 - SimpleJWT (JWT Authentication)
-- SQLite (default, can use PostgreSQL/MySQL)
+- SQLite 
 
 ---
 
-## 🧪 Testing
-Use Postman or curl to test API endpoints.
+##  Testing
+Use Postman to test API endpoints.
 
 Example:
 ```bash
