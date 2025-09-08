@@ -84,7 +84,7 @@ Response:
 
 ### Example: Create Profile
 ```json
-POST /api/patients/profiles/
+POST /api/patients/
 {
   "phone_number": "0712345678",
   "address": "Nairobi, Kenya",
@@ -103,7 +103,7 @@ POST /api/patients/profiles/
 
 ### Example: Create Appointment
 ```json
-POST /api/appointments/appointments/
+POST /api/appointments/
 {
   "patient": 1,
   "doctor": 2,
@@ -142,7 +142,7 @@ POST /api/queue/
 
 ### Example: Create Medical Record
 ```json
-POST /api/records/records/
+POST /api/records/
 {
   "patient": 1,
   "doctor_notes": "Patient diagnosed with flu. Prescribed medication."
@@ -171,13 +171,6 @@ POST /api/records/records/
 ---
 
 ##  Testing
-Use Postman to test API endpoints.
-
-Example:
-```bash
-curl -X GET http://127.0.0.1:8000/api/patients/profiles/ -H "Authorization: Bearer <your_token>"
-```
+Use VS CODE REST CLIENT to test API endpoints.
 
 ---
-
-

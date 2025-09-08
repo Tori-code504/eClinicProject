@@ -1,0 +1,134 @@
+### -------------------------
+### AUTH & USERS
+### -------------------------
+
+### 1. Register a new patient
+POST http://127.0.0.1:8000/api/users/register/
+Content-Type: application/json
+
+{
+  "username": "Melly",
+  "password": "TestPass123",
+  "email": "melly1@example.com",
+  "role": "Patient"
+}
+
+### 2. Login as Patient
+POST http://127.0.0.1:8000/api/users/login/
+Content-Type: application/json
+
+{
+  "username": "Melly",
+  "password": "TestPass123"
+}
+
+> {% client.global.set("patient_token", response.body.access) %}
+
+### 3. Login as Admin
+POST http://127.0.0.1:8000/api/users/login/
+Content-Type: application/json
+
+{
+  "username": "admin1",
+  "password": "AdminPass123"
+}
+
+> {% client.global.set("admin_token", response.body.access) %}
+
+### 4. Login as Doctor
+POST http://127.0.0.1:8000/api/users/login/
+Content-Type: application/json
+
+{
+  "username": "doctor1",
+  "password": "DoctorPass123"
+}
+
+> {% client.global.set("doctor_token", response.body.access) %}
+
+---
+
+### -------------------------
+### PATIENT PROFILES
+### -------------------------
+
+### 5. Patient creates profile
+POST http://127.0.0.1:8000/api/patients/
+Authorization: Bearer {{patient_token}}
+Content-Type: application/json
+
+{
+  "date_of_birth": "1990-05-10",
+  "address": "Nairobi",
+  "phone_number": "0712345678"
+}
+
+### 6. Admin views all patient profiles
+GET http://127.0.0.1:8000/api/patients/
+Authorization: Bearer {{admin_token}}
+
+---
+
+### -------------------------
+### APPOINTMENTS
+### -------------------------
+
+### 7. Patient creates an appointment
+POST http://127.0.0.1:8000/api/appointments/
+Authorization: Bearer {{patient_token}}
+Content-Type: application/json
+
+{
+  "doctor": 1,
+  "date": "2025-09-05",
+  "time": "10:00:00",
+  "reason": "Regular check-up"
+}
+
+### 8. Doctor views all appointments
+GET http://127.0.0.1:8000/api/appointments/
+Authorization: Bearer {{doctor_token}}
+
+---
+
+### -------------------------
+### QUEUE
+### -------------------------
+
+### 9. Admin/Nurse adds appointment to queue
+POST http://127.0.0.1:8000/api/queue/
+Authorization: Bearer {{admin_token}}
+Content-Type: application/json
+
+{
+  "appointment": 1,
+  "position": 1,
+  "status": "waiting"
+}
+
+### 10. View queue
+GET http://127.0.0.1:8000/api/queue/
+Authorization: Bearer {{admin_token}}
+
+---
+
+### -------------------------
+### MEDICAL RECORDS
+### -------------------------
+
+### 11. Doctor creates a medical record
+POST http://127.0.0.1:8000/api/records/
+Authorization: Bearer {{doctor_token}}
+Content-Type: application/json
+
+{
+  "patient": 1,
+  "diagnosis": "Flu",
+  "treatment": "Rest and hydration",
+  "notes": "Patient recovering well"
+}
+
+### 12. Patient views their own medical records
+GET http://127.0.0.1:8000/api/records/
+Authorization: Bearer {{patient_token}}
+
