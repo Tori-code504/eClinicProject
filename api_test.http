@@ -1,41 +1,49 @@
-### -------------------------
-### AUTH & USERS
-### -------------------------
+# -------------------------
+# AUTH & USERS
+# -------------------------
 
-### 1. Register a new patient
+### 1) Register a new patient
+# @name registerPatient
 POST http://127.0.0.1:8000/api/users/register/
 Content-Type: application/json
 
 {
-  "username": "Melly",
-  "password": "TestPass123",
-  "email": "melly1@example.com",
+  "username": "Joe",
+  "password": "Pass123",
+  "email": "joe@example.com",
+  "first_name": "Joe",
+  "last_name": "Dooh",
+  "phone_number": "0798765432",
   "role": "Patient"
 }
 
-### 2. Login as Patient
+### 2) Login as Patient
+# @name loginPatient
 POST http://127.0.0.1:8000/api/users/login/
 Content-Type: application/json
 
 {
-  "username": "Melly",
-  "password": "TestPass123"
+  "username": "Joe",
+  "password": "Pass123"
 }
 
-> {% client.global.set("patient_token", response.body.access) %}
-
-### 3. Login as Admin
-POST http://127.0.0.1:8000/api/users/login/
+### 3) Register a new doctor
+# @name registerDoctor
+POST http://127.0.0.1:8000/api/users/register/
 Content-Type: application/json
 
 {
-  "username": "admin1",
-  "password": "AdminPass123"
+  "username": "doctor1",
+  "password": "DoctorPass123",
+  "email": "doctor1@example.com",
+  "first_name": "Jane",
+  "last_name": "Doe",
+  "phone_number": "0788888888",
+  "role": "Doctor"
 }
 
-> {% client.global.set("admin_token", response.body.access) %}
-
-### 4. Login as Doctor
+### 4) Login as Doctor
+# @name loginDoctor
 POST http://127.0.0.1:8000/api/users/login/
 Content-Type: application/json
 
@@ -44,91 +52,109 @@ Content-Type: application/json
   "password": "DoctorPass123"
 }
 
-> {% client.global.set("doctor_token", response.body.access) %}
+### 5) Register a new admin
+# @name registerAdmin
+POST http://127.0.0.1:8000/api/users/register/
+Content-Type: application/json
 
----
+{
+  "username": "admin1",
+  "password": "AdminPass123",
+  "email": "admin@example.com",
+  "first_name": "Alice",
+  "last_name": "Smith",
+  "phone_number": "0777777777",
+  "role": "Admin"
+}
 
-### -------------------------
-### PATIENT PROFILES
-### -------------------------
+### 6) Login as Admin
+# @name loginAdmin
+POST http://127.0.0.1:8000/api/users/login/
+Content-Type: application/json
 
-### 5. Patient creates profile
+{
+  "username": "admin1",
+  "password": "AdminPass123"
+}
+
+# -------------------------
+# PATIENT PROFILES
+# -------------------------
+
+### 7) Patient creates profile
+# @name createPatientProfile
 POST http://127.0.0.1:8000/api/patients/
-Authorization: Bearer {{patient_token}}
+Authorization: Bearer {{loginPatient.response.body.$.access}}
 Content-Type: application/json
 
 {
   "date_of_birth": "1990-05-10",
   "address": "Nairobi",
-  "phone_number": "0712345678"
+  "phone_number": "0798765432",
+  "gender": "female",
+  "id_number": "23567432"
 }
 
-### 6. Admin views all patient profiles
+### 8) Admin views all patient profiles
 GET http://127.0.0.1:8000/api/patients/
-Authorization: Bearer {{admin_token}}
+Authorization: Bearer {{loginAdmin.response.body.$.access}}
 
----
+# -------------------------
+# APPOINTMENTS
+# -------------------------
 
-### -------------------------
-### APPOINTMENTS
-### -------------------------
-
-### 7. Patient creates an appointment
+### 9) Patient creates an appointment
+# @name createAppointment
 POST http://127.0.0.1:8000/api/appointments/
-Authorization: Bearer {{patient_token}}
+Authorization: Bearer {{loginPatient.response.body.$.access}}
 Content-Type: application/json
 
 {
-  "doctor": 1,
-  "date": "2025-09-05",
-  "time": "10:00:00",
-  "reason": "Regular check-up"
+  "patient": {{createPatientProfile.response.body.$.id}},
+  "doctor": {{registerDoctor.response.body.$.id}},
+  "appointment_time": "2025-09-05T10:00:00+03:00",
+  "service_type": "Regular check-up"
 }
 
-### 8. Doctor views all appointments
+### 10) Doctor views all appointments
 GET http://127.0.0.1:8000/api/appointments/
-Authorization: Bearer {{doctor_token}}
+Authorization: Bearer {{loginDoctor.response.body.$.access}}
 
----
+# -------------------------
+# QUEUE
+# -------------------------
 
-### -------------------------
-### QUEUE
-### -------------------------
-
-### 9. Admin/Nurse adds appointment to queue
+### 11) Admin/Nurse adds appointment to queue
 POST http://127.0.0.1:8000/api/queue/
-Authorization: Bearer {{admin_token}}
+Authorization: Bearer {{loginAdmin.response.body.$.access}}
 Content-Type: application/json
 
 {
-  "appointment": 1,
+  "appointment": {{createAppointment.response.body.$.id}},
   "position": 1,
   "status": "waiting"
 }
 
-### 10. View queue
+### 12) View queue
 GET http://127.0.0.1:8000/api/queue/
-Authorization: Bearer {{admin_token}}
+Authorization: Bearer {{loginAdmin.response.body.$.access}}
 
----
+# -------------------------
+# MEDICAL RECORDS
+# -------------------------
 
-### -------------------------
-### MEDICAL RECORDS
-### -------------------------
-
-### 11. Doctor creates a medical record
+### 13) Doctor creates a medical record
 POST http://127.0.0.1:8000/api/records/
-Authorization: Bearer {{doctor_token}}
+Authorization: Bearer {{loginDoctor.response.body.$.access}}
 Content-Type: application/json
 
 {
-  "patient": 1,
+  "patient": {{createPatientProfile.response.body.$.id}},
   "diagnosis": "Flu",
   "treatment": "Rest and hydration",
   "notes": "Patient recovering well"
 }
 
-### 12. Patient views their own medical records
+### 14) Patient views their own medical records
 GET http://127.0.0.1:8000/api/records/
-Authorization: Bearer {{patient_token}}
-
+Authorization: Bearer {{loginPatient.response.body.$.access}}
